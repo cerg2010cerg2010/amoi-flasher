@@ -1,0 +1,28 @@
+TARGET=flasher
+CXX=cl
+LD=link
+CXXFLAGS=/D"WIN32" /D"_CONSOLE" /I "./inc" /Gs /TC
+LDFLAGS=/NOLOGO /SUBSYSTEM:console /MACHINE:X86 /LIBPATH:lib
+LIBS=winusb.lib setupapi.lib
+RM=del /q
+
+SOURCES= \
+	flasher.cpp
+	
+OBJ=$(SOURCES:.cpp=.obj)
+
+TARGET=$(TARGET).exe
+all: $(TARGET)
+
+#	$(CXX) /Fe $@ /c $^ /link $(LDFLAGS)
+
+$(TARGET): $(OBJ)
+	$(LD) /out:$@ $(LDFLAGS) $(LIBS) $(OBJ)
+
+.cpp.obj:
+	$(CXX) /c /Fo$@ $(CXXFLAGS) $<
+
+clean:
+	$(RM) $(OBJ) $(TARGET)
+
+.PHONY: all clean
