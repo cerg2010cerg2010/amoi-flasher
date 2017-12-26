@@ -121,6 +121,8 @@ Error:
 	return;
 }
 
+#define WRITE_SIZE 4096
+// #define WRITE_SIZE (winusbContext.BulkInMaxPacket)
 ULONG WriteData(HANDLE hDriver, DEVICE_CONTEXT winusbContext, OVERLAPPED writeOverlapped, BYTE *pbData, ULONG cData)
 {
 	ULONG   cbWritten = 0;
@@ -133,9 +135,9 @@ ULONG WriteData(HANDLE hDriver, DEVICE_CONTEXT winusbContext, OVERLAPPED writeOv
 	//
 	while (cData)
 	{
-		if (cData > winusbContext.BulkOutMaxPacket)
+		if (cData > WRITE_SIZE)
 		{
-			cbWrite = winusbContext.BulkOutMaxPacket;
+			cbWrite = WRITE_SIZE;
 		}
 		else
 		{
